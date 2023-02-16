@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    password: 123456
+    url: jdbc:mysql://localhost:3306/ticket_management
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+
+jwt:
+  token:
+    prefix: Bearer
+    validity: '18000'
+  header:
+    string: Authorization
+  signing:
+    key: 09H3hIPk852SfXymedp0KH8zAY0EF1OjWsMf8JGXL0g4oarlR9A2fKYMuP39Y07xljjhSfAnEI4dbYh4lJXRJWqZcGhYt6mQ2TgXpQ5y8jgCQi1nsi1xiaLkUI5ZFi9U8f9i4W7RsrXH0kMBtNpukrF5MEL1CErzo31CNxTWitdMdrJ0unfRHVzNWI5CAoL2eBAXqsFhV89aruePzWjlyDTa9cz8FjHIP1kZI0B9lbSezXzKSr2W6bEjBNGY0kHT
+  authorities:
+    key: roles
