@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -45,7 +46,7 @@ public class PeopleServiceImpl implements PeopleService {
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
 
         List<People> peoples = peopleRepository.findAllByCarId(user.getCar().getId());
-        List<Checkin> checkins = checkinRepository.findAll();
+        List<Checkin> checkins = checkinRepository.findAllByCarId(user.getCar().getId());
 
         return getPeopleCheckinList(peoples, checkins);
     }
@@ -62,10 +63,11 @@ public class PeopleServiceImpl implements PeopleService {
                 .orElseThrow(() -> new NotFoundException("Room not found!"));
 
         if (people.getCar().getId() != peopleRequest.getCarId()) {
-            var checkin = checkinRepository.findByPeople(people)
-                    .orElseThrow(() -> new NotFoundException("People not found!"));
-            checkin.setCar(car);
-            checkinRepository.save(checkin);
+            Optional<Checkin> checkin = checkinRepository.findByPeople(people);
+            if (checkin.isPresent()) {
+                checkin.get().setCar(car);
+                checkinRepository.save(checkin.get());
+            }
         }
 
         people.setNote(peopleRequest.getNote());
@@ -86,10 +88,11 @@ public class PeopleServiceImpl implements PeopleService {
                 .orElseThrow(() -> new NotFoundException("Room not found!"));
 
         if (people.getCar().getId() != peopleRequest.getCarId()) {
-            var checkin = checkinRepository.findByPeople(people)
-                    .orElseThrow(() -> new NotFoundException("People not found!"));
-            checkin.setCar(car);
-            checkinRepository.save(checkin);
+            Optional<Checkin> checkin = checkinRepository.findByPeople(people);
+            if (checkin.isPresent()) {
+                checkin.get().setCar(car);
+                checkinRepository.save(checkin.get());
+            }
         }
 
         people.setNote(peopleRequest.getNote());

@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/people")
 @RequiredArgsConstructor
+@CrossOrigin
 public class PeopleController {
     private final PeopleService peopleService;
     private final ModelMapper mapper;
     private final CheckinService checkinService;
 
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
     public ResponseEntity<List<PeopleCheckinDto>> getAllPeopleCheckin() {
         List<PeopleCheckinDto> peoples = peopleService.getAllPeopleCheckins();
