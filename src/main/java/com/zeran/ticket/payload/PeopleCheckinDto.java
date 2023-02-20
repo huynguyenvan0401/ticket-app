@@ -1,4 +1,4 @@
-package com.zeran.ticket.response;
+package com.zeran.ticket.payload;
 
 import com.zeran.ticket.entity.Car;
 import com.zeran.ticket.entity.Room;
@@ -8,14 +8,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class PeopleResponse {
+public class PeopleCheckinDto {
     private Long id;
     private String account;
-    private Car car;
+    private Long carId;
+    private String licensePlate;
     private String phoneNumber;
     private String note;
-    private Room room;
+    private Long roomId;
+    private String roomType;
+    private String roomNumber;
+    private Boolean isCheckedIn;
 }

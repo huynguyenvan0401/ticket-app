@@ -28,7 +28,6 @@ public class TicketController {
         return ticketService.getAllTickets();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<TicketDto> getTicketById(@PathVariable(name = "id") long id) {
         return ResponseEntity.ok(ticketService.getTicketById(id));

@@ -13,7 +13,7 @@ spring:
 jwt:
   token:
     prefix: Bearer
-    validity: '18000'
+    validity: '86400'
   header:
     string: Authorization
   signing:

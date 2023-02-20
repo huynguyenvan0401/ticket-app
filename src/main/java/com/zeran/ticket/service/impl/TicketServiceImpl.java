@@ -40,13 +40,13 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public TicketDto getTicketById(long id) {
-        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", String.valueOf(id)));
         return mapToDTO(ticket);
     }
 
     @Override
     public TicketDto updateTicket(TicketDto ticketDto, long id) {
-        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", String.valueOf(id)));
         ticket.setTicketNum(ticketDto.getTicketNum());
 
         Ticket updatedTicket = ticketRepository.save(ticket);
@@ -56,7 +56,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deleteTicketById(long id) {
-        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", id));
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Ticket", "id", String.valueOf(id)));
         ticketRepository.delete(ticket);
     }
 

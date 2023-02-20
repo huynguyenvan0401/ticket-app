@@ -31,8 +31,8 @@ public class CheckinController {
 
     @PreAuthorize("hasRole('DRIVER')")
     @GetMapping()
-    public List<CheckinResponse> getAllCheckins() {
-        return checkinService.getAllCheckins()
+    public List<CheckinResponse> getAllCheckinsForDriver() {
+        return checkinService.getAllCheckinsForDriver()
                 .stream().map(checkin -> mapper.map(checkin, CheckinResponse.class)).collect(Collectors.toList());
     }
 
@@ -41,6 +41,27 @@ public class CheckinController {
     public ResponseEntity resetDriveCheckin() {
         checkinService.resetDriveCheckin();
         return ResponseEntity.ok("Delete all checkin of driver");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping()
+    public ResponseEntity resetAllCheckin() {
+        checkinService.resetAllCheckin();
+        return ResponseEntity.ok("Delete all checkin");
+    }
+
+    @PreAuthorize("hasRole('DRIVER') or hasRole('ADMIN')")
+    @DeleteMapping("/deleteByPeopleId/{id}")
+    public ResponseEntity deleteByPeopleId(@PathVariable Long id) {
+        checkinService.deleteByPeopleId(id);
+        return ResponseEntity.ok("Deleted checkin!");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/getAllForAdmin")
+    public List<CheckinResponse> getAllCheckins() {
+        return checkinService.getAllCheckins()
+                .stream().map(checkin -> mapper.map(checkin, CheckinResponse.class)).collect(Collectors.toList());
     }
 
 }

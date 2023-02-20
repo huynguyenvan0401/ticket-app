@@ -31,4 +31,8 @@ public class People {
 
     @Column(name = "note", nullable = false)
     private String note;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    private Room room;
 }

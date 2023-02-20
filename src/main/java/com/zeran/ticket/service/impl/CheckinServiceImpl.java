@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,19 +38,14 @@ public class CheckinServiceImpl implements CheckinService {
 
     @Override
     public CheckinDto createCheckin(CheckinRequest checkinRequest) {
-        Optional<Code> code = codeRepository.findByCode(checkinRequest.getCode());
-        if (!code.isPresent()) {
-            throw new NotFoundException("Code not found when create checkin, code is: " + checkinRequest.getCode());
-        }
 
         Optional<People> people = peopleRepository.findById(checkinRequest.getPeopleId());
         if (!people.isPresent()) {
             throw new NotFoundException("People not found when create checkin, peopleId is:  " + checkinRequest.getPeopleId());
         }
 
-        Optional<Checkin> existCheckin = checkinRepository.findTopByPeopleAndCode(people.get(), code.get());
-        if (existCheckin.isPresent()) {
-            throw new ResourceExistException("Already checked in:  " + people.get().getAccount());
+        if (!Objects.equals(people.get().getCar().getId(), checkinRequest.getCarId())) {
+            throw new NotFoundException("Check in nham xe");
         }
 
         Optional<Car> car = carRepository.findById(checkinRequest.getCarId());
@@ -57,17 +53,33 @@ public class CheckinServiceImpl implements CheckinService {
             throw new NotFoundException("Car not found when create checkin, carId is: " + checkinRequest.getCarId());
         }
 
+        Optional<Checkin> existCheckin = checkinRepository.findTopByPeopleAndCar(people.get(), car.get());
+        if (existCheckin.isPresent()) {
+            throw new ResourceExistException("Already checked in:  " + people.get().getAccount());
+        }
+
+
         var checkin = Checkin.builder()
-                .code(code.get())
                 .people(people.get())
                 .car(car.get())
                 .build();
+
+        Optional<Code> code = codeRepository.findByCode(checkinRequest.getCode());
+        if (code.isPresent()) {
+            checkin.setCode(code.get());
+        }
         Checkin createdCheckin = checkinRepository.save(checkin);
         return mapper.map(createdCheckin, CheckinDto.class);
     }
 
     @Override
     public List<CheckinDto> getAllCheckins() {
+        List<Checkin> checkins = checkinRepository.findAll();
+        return checkins.stream().map(checkin -> mapper.map(checkin, CheckinDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CheckinDto> getAllCheckinsForDriver() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         var user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
@@ -82,6 +94,18 @@ public class CheckinServiceImpl implements CheckinService {
         var user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new UserNotFoundException("User not found!"));
         checkinRepository.deleteAllByCarId(user.getCar().getId());
+    }
+
+    @Override
+    @Transactional
+    public void resetAllCheckin() {
+        checkinRepository.deleteAll();
+    }
+
+    @Override
+    @Transactional
+    public void deleteByPeopleId(Long id) {
+        checkinRepository.deleteAllByPeopleId(id);
     }
 
 }
