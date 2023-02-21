@@ -41,21 +41,22 @@ public class CheckinServiceImpl implements CheckinService {
 
         Optional<People> people = peopleRepository.findById(checkinRequest.getPeopleId());
         if (!people.isPresent()) {
-            throw new NotFoundException("People not found when create checkin, peopleId is:  " + checkinRequest.getPeopleId());
-        }
-
-        if (!Objects.equals(people.get().getCar().getId(), checkinRequest.getCarId())) {
-            throw new NotFoundException("Check in nham xe");
+            throw new BadRequestException("Thành viên không tồn tại!");
         }
 
         Optional<Car> car = carRepository.findById(checkinRequest.getCarId());
         if (!car.isPresent()) {
-            throw new NotFoundException("Car not found when create checkin, carId is: " + checkinRequest.getCarId());
+            throw new BadRequestException(String.format("Xe không tồn tại, carId: %s", checkinRequest.getCarId().toString()));
+        }
+
+        if (!Objects.equals(people.get().getCar().getId(), checkinRequest.getCarId())) {
+            throw new BadRequestException(String.format("Checkin nhầm xe, xe của bạn là: %s. Xe bạn đang checkin là: %s",
+                    people.get().getCar().getLicensePlate(), car.get().getLicensePlate()));
         }
 
         Optional<Checkin> existCheckin = checkinRepository.findTopByPeopleAndCar(people.get(), car.get());
         if (existCheckin.isPresent()) {
-            throw new ResourceExistException("Already checked in:  " + people.get().getAccount());
+            throw new BadRequestException(String.format("Bạn đã checkin rồi: %s", people.get().getAccount()));
         }
 
 

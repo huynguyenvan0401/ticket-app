@@ -1,6 +1,8 @@
 package com.zeran.ticket.service.impl;
 
 import com.zeran.ticket.entity.Car;
+import com.zeran.ticket.exception.BadRequestException;
+import com.zeran.ticket.exception.NotFoundException;
 import com.zeran.ticket.payload.CarDto;
 import com.zeran.ticket.repository.CarRepository;
 import com.zeran.ticket.service.CarService;
@@ -22,5 +24,12 @@ public class CarServiceImpl implements CarService {
         List<Car> cars = carRepository.findAll();
 
         return cars.stream().map(car -> mapper.map(car, CarDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public CarDto findCarById(Long id) {
+        var car = carRepository.findById(id)
+                .orElseThrow(() -> new BadRequestException("Car not found!"));
+        return mapper.map(car, CarDto.class);
     }
 }

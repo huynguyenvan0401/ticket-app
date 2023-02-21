@@ -30,4 +30,14 @@ public class RestResponseEntityExceptionHandler
         return handleExceptionInternal(ex, bodyOfResponse,
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
+
+    @ExceptionHandler(value
+            = { BadRequestException.class })
+    protected ResponseEntity<Object> handleBadRequestException(
+            RuntimeException ex, WebRequest request) {
+        String bodyOfResponse = ex.getMessage();
+
+        return handleExceptionInternal(ex, bodyOfResponse,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 }
