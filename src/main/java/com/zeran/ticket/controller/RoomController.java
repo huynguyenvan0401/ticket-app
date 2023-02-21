@@ -20,7 +20,6 @@ import java.util.List;
 public class RoomController {
     private final RoomService roomService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
     public List<RoomDto> getAllRooms() {
         List<RoomDto> rooms = roomService.getAllRooms();

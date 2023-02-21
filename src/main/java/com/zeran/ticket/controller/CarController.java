@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public class CarController {
     private final CarService carService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
     public List<CarDto> getAllCheckins() {
         List<CarDto> cars = carService.getAllCars();
