@@ -19,4 +19,5 @@ public class PeopleCheckinResponse {
     private String note;
     private Room room;
     private Boolean isCheckedIn;
+    private Boolean isRoomMaster;
 }

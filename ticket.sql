@@ -82,6 +82,7 @@ CREATE TABLE `people` (
   `account` varchar(255) NOT NULL,
   `note` varchar(255) NOT NULL,
   `phone_number` varchar(255) NOT NULL,
+  `is_room_master` tinyint(1) NOT NULL DEFAULT '0',
   `car_id` bigint DEFAULT NULL,
   `room_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -91,31 +92,33 @@ CREATE TABLE `people` (
   CONSTRAINT `FKoi9xscn0n2cm6k9iow9rwstwu` FOREIGN KEY (`car_id`) REFERENCES `car` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('HuyNV21', '2', '0987654137', 'Hút Cần', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('KienNV12', '1', '0974627983', 'Đập Đá', '2');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('HieuNV41', '2', '0123976354', 'Đi WC', '3');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('HoangNN104', '1', '0233345555', 'Đi tắm', '4');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH41', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH42', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH43', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH44', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH45', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH46', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH47', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH48', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH49', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH412', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH413', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH414', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH415', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH416', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('VietH417', '1', '0827333645', 'Hít thuốc', '1');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('HieuNV42', '2', '0123976354', 'Đi WC', '3');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('HieuNV43', '2', '0123976354', 'Đi WC', '3');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('HieuNV44', '2', '0123976354', 'Đi WC', '3');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('HieuNV45', '2', '0123976354', 'Đi WC', '3');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('HieuNV46', '2', '0123976354', 'Đi WC', '3');
-INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`) VALUES ('HieuNV47', '2', '0123976354', 'Đi WC', '3');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HuyNV21', '2', '0987654137', 'Hút Cần', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HuyNV22', '2', '0987654137', 'Hút Cần', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HuyNV23', '2', '0987654137', 'Hút Cần', '2', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HuyNV24', '2', '0987654137', 'Hút Cần', '2', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HieuNV41', '2', '0987654137', 'Hút Cần', '2', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HieuNV42', '2', '0987654137', 'Hút Cần', '2', '1');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HieuNV43', '2', '0987654137', 'Hút Cần', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HieuNV44', '2', '0987654137', 'Hút Cần', '3', '1');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HieuNV45', '2', '0987654137', 'Hút Cần', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HieuNV46', '2', '0987654137', 'Hút Cần', '3', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HieuNV47', '2', '0987654137', 'Hút Cần', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HieuNV48', '2', '0987654137', 'Hút Cần', '3', '1');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('HieuNV49', '2', '0987654137', 'Hút Cần', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH4', '1', '0987659999', 'WC', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH5', '1', '0987659999', 'WC', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH6', '1', '0987659999', 'WC', '2', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH7', '1', '0987659999', 'WC', '2', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH8', '1', '0987659999', 'WC', '1', '1');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH9', '1', '0987659999', 'WC', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH41', '1', '0987659999', 'WC', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH42', '1', '0987659999', 'WC', '1', '1');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH43', '1', '0987659999', 'WC', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH44', '1', '0987659999', 'WC', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH45', '2', '0987659999', 'WC', '1', '1');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH46', '1', '0987659999', 'WC', '1', '0');
+INSERT INTO `ticket_management`.`people` (`account`, `car_id`, `phone_number`, `note`, `room_id`, `is_room_master`) VALUES ('VietH47', '2', '0987659999', 'WC', '1', '0');
+
 
 CREATE TABLE `code` (
   `id` bigint NOT NULL AUTO_INCREMENT,

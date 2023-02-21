@@ -22,4 +22,5 @@ public class PeopleCheckinDto {
     private String roomType;
     private String roomNumber;
     private Boolean isCheckedIn;
+    private Boolean isRoomMaster;
 }

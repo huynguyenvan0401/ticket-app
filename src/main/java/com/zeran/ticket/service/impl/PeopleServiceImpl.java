@@ -2,6 +2,7 @@ package com.zeran.ticket.service.impl;
 
 import com.zeran.ticket.entity.Checkin;
 import com.zeran.ticket.entity.People;
+import com.zeran.ticket.exception.BadRequestException;
 import com.zeran.ticket.exception.NotFoundException;
 import com.zeran.ticket.exception.UserNotFoundException;
 import com.zeran.ticket.payload.PeopleCheckinDto;
@@ -108,6 +109,30 @@ public class PeopleServiceImpl implements PeopleService {
         return peoples.stream().map(people -> mapper.map(people, PeopleDto.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<PeopleDto> getPeopleAccountByDriver() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var user = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
+
+//        change this
+        List<People> peoples = peopleRepository.findAccountByDriver(user.getCar().getId());
+        return peoples.stream().map(people -> mapper.map(people, PeopleDto.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void updatePeopleCar(PeopleRequest peopleRequest) {
+        var people = peopleRepository.findById(peopleRequest.getId())
+                .orElseThrow(() -> new BadRequestException("People not found!"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var user = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UserNotFoundException("User not found!"));
+
+        people.setCar(user.getCar());
+
+        peopleRepository.save(people);
+    }
+
     private List<PeopleCheckinDto> getPeopleCheckinList(List<People> peoples, List<Checkin> checkins) {
         List<PeopleCheckinDto> peopleCheckins = new ArrayList<>();
 
@@ -129,6 +154,7 @@ public class PeopleServiceImpl implements PeopleService {
                     .roomType(people.getRoom().getType())
                     .roomNumber(people.getRoom().getNumber())
                     .isCheckedIn(isChecked)
+                    .isRoomMaster(people.getIsRoomMaster())
                     .build());
         }
 

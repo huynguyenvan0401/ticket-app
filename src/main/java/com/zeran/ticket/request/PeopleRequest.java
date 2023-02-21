@@ -16,4 +16,5 @@ public class PeopleRequest {
     private String note;
     private Long carId;
     private Long roomId;
+    private Boolean isRoomMaster;
 }

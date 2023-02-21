@@ -43,6 +43,15 @@ public class PeopleController {
     }
 
     @PreAuthorize("hasRole('DRIVER')")
+    @GetMapping("account/drive")
+    public ResponseEntity<List<PeopleAccountResponse>> getAllPeopleAccountByDriver() {
+        List<PeopleDto> peoples = peopleService.getPeopleAccountByDriver();
+        List<PeopleAccountResponse> peopleAccounts = peoples.stream()
+                .map(peopleDto -> mapper.map(peopleDto, PeopleAccountResponse.class)).collect(Collectors.toList());
+        return ResponseEntity.ok(peopleAccounts);
+    }
+
+    @PreAuthorize("hasRole('DRIVER')")
     @GetMapping("/drive")
     public ResponseEntity<List<PeopleCheckinDto>> getPeopleDrive() {
         List<PeopleCheckinDto> peoples = peopleService.getPeopleCheckinDrive();
@@ -60,6 +69,13 @@ public class PeopleController {
     @PostMapping("/updatePeopleDrive")
     public ResponseEntity updatePeopleDrive(@RequestBody PeopleRequest peopleRequest) {
         peopleService.updatePeopleDrive(peopleRequest);
+        return ResponseEntity.ok("Success update people!");
+    }
+
+    @PreAuthorize("hasRole('DRIVER')")
+    @PostMapping("/updateCar")
+    public ResponseEntity updatePeopleCar(@RequestBody PeopleRequest peopleRequest) {
+        peopleService.updatePeopleCar(peopleRequest);
         return ResponseEntity.ok("Success update people!");
     }
 }

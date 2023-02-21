@@ -18,4 +18,5 @@ public class PeopleResponse {
     private String phoneNumber;
     private String note;
     private Room room;
+    private Boolean isRoomMaster;
 }
