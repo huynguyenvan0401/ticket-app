@@ -55,6 +55,10 @@ INSERT INTO `ticket_management`.`_user`
 (`id`, `email`, `first_name`, `last_name`, `password`, `car_id`)
 VALUES ('2', 'huydriver@gmail.com', 'Huy', 'Nguyen', '$2a$10$FFKwmzWpHQJtWuwPEv5NgeT3dUyQxXLsTJYFAPdSTgOBOlsPE5vUq', '1');
 
+INSERT INTO `ticket_management`.`_user`
+(`id`, `email`, `first_name`, `last_name`, `password`, `car_id`)
+VALUES ('3', 'tiendriver@gmail.com', 'Tien', 'Doan', '$2a$10$FFKwmzWpHQJtWuwPEv5NgeT3dUyQxXLsTJYFAPdSTgOBOlsPE5vUq', '2');
+
 CREATE TABLE `user_role` (
   `user_id` bigint NOT NULL,
   `role_id` bigint NOT NULL,
@@ -67,6 +71,10 @@ CREATE TABLE `user_role` (
 INSERT INTO `ticket_management`.`user_role`(`user_id`, `role_id`) VALUES ('1', '1');
 INSERT INTO `ticket_management`.`user_role`(`user_id`, `role_id`) VALUES ('1', '2');
 INSERT INTO `ticket_management`.`user_role`(`user_id`, `role_id`) VALUES ('1', '3');
+INSERT INTO `ticket_management`.`user_role`(`user_id`, `role_id`) VALUES ('2', '1');
+INSERT INTO `ticket_management`.`user_role`(`user_id`, `role_id`) VALUES ('2', '3');
+INSERT INTO `ticket_management`.`user_role`(`user_id`, `role_id`) VALUES ('3', '1');
+INSERT INTO `ticket_management`.`user_role`(`user_id`, `role_id`) VALUES ('3', '3');
 
 
 CREATE TABLE `people` (
