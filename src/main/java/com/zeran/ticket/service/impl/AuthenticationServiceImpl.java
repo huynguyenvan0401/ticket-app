@@ -2,6 +2,7 @@ package com.zeran.ticket.service.impl;
 
 import com.zeran.ticket.entity.Role;
 import com.zeran.ticket.entity.User;
+import com.zeran.ticket.exception.BadRequestException;
 import com.zeran.ticket.exception.UserAlreadyExistException;
 import com.zeran.ticket.exception.UserNotFoundException;
 import com.zeran.ticket.repository.RoleRepository;
@@ -58,14 +59,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest authReq) {
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authReq.getEmail(),
                         authReq.getPassword()
                 )
         );
+
         var user = userRepository.findByEmail(authReq.getEmail())
-                .orElseThrow(() -> new UserNotFoundException("User not found!"));
+                .orElseThrow(() -> new BadRequestException("User không tồn tại!"));
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
