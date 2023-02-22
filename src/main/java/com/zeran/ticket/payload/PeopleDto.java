@@ -13,4 +13,5 @@ public class PeopleDto {
     private String note;
     private Room room;
     private Boolean isRoomMaster;
+    private Boolean isHoldRoomKey;
 }

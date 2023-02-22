@@ -16,4 +16,5 @@ public interface PeopleService {
     List<PeopleDto> getPeopleAccounts();
     List<PeopleDto> getPeopleAccountByDriver();
     void updatePeopleCar(PeopleRequest peopleRequest);
+    void updateHoldRoomKey(PeopleRequest peopleRequest);
 }

@@ -74,6 +74,12 @@ public class PeopleServiceImpl implements PeopleService {
         people.setNote(peopleRequest.getNote());
         people.setCar(car);
         people.setRoom(room);
+
+        if (peopleRequest.getIsRoomMaster() != null && "true".equals(peopleRequest.getIsRoomMaster())) {
+            people.setIsRoomMaster(true);
+        } else {
+            people.setIsRoomMaster(false);
+        }
         peopleRepository.save(people);
     }
 
@@ -99,6 +105,13 @@ public class PeopleServiceImpl implements PeopleService {
         people.setNote(peopleRequest.getNote());
         people.setCar(car);
         people.setRoom(room);
+
+        if (peopleRequest.getIsRoomMaster() != null && "true".equals(peopleRequest.getIsRoomMaster())) {
+            people.setIsRoomMaster(true);
+        } else {
+            people.setIsRoomMaster(false);
+        }
+
         peopleRepository.save(people);
 
     }
@@ -133,6 +146,20 @@ public class PeopleServiceImpl implements PeopleService {
         peopleRepository.save(people);
     }
 
+    @Override
+    public void updateHoldRoomKey(PeopleRequest peopleRequest) {
+        var people = peopleRepository.findById(peopleRequest.getId())
+                .orElseThrow(() -> new BadRequestException("People not found!"));
+
+        if (peopleRequest.getIsHoldRoomKey() != null && "true".equals(peopleRequest.getIsHoldRoomKey())) {
+            people.setIsHoldRoomKey(true);
+        } else {
+            people.setIsHoldRoomKey(false);
+        }
+
+        peopleRepository.save(people);
+    }
+
     private List<PeopleCheckinDto> getPeopleCheckinList(List<People> peoples, List<Checkin> checkins) {
         List<PeopleCheckinDto> peopleCheckins = new ArrayList<>();
 
@@ -155,6 +182,7 @@ public class PeopleServiceImpl implements PeopleService {
                     .roomNumber(people.getRoom().getNumber())
                     .isCheckedIn(isChecked)
                     .isRoomMaster(people.getIsRoomMaster())
+                    .isHoldRoomKey(people.getIsHoldRoomKey())
                     .build());
         }
 

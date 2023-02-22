@@ -25,6 +25,9 @@ public class People {
     @Column(name = "is_room_master", nullable = false, columnDefinition="BOOLEAN DEFAULT false")
     private Boolean isRoomMaster;
 
+    @Column(name = "is_hold_room_key", nullable = false, columnDefinition="BOOLEAN DEFAULT false")
+    private Boolean isHoldRoomKey;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car car;

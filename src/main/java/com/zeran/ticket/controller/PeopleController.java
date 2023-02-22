@@ -72,6 +72,13 @@ public class PeopleController {
         return ResponseEntity.ok("Success update people!");
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('DRIVER')")
+    @PostMapping("/holdKey")
+    public ResponseEntity holdRoomKey(@RequestBody PeopleRequest peopleRequest) {
+        peopleService.updateHoldRoomKey(peopleRequest);
+        return ResponseEntity.ok("Success update people!");
+    }
+
     @PreAuthorize("hasRole('DRIVER')")
     @PostMapping("/updateCar")
     public ResponseEntity updatePeopleCar(@RequestBody PeopleRequest peopleRequest) {
