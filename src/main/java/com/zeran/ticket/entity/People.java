@@ -35,7 +35,7 @@ public class People {
     @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
-    @Column(name = "note", nullable = false)
+    @Column(name = "note")
     private String note;
 
     @OneToOne(cascade = CascadeType.ALL)
