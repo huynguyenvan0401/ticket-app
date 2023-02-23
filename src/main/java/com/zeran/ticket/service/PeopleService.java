@@ -11,7 +11,6 @@ import java.util.List;
 public interface PeopleService {
     List<PeopleCheckinDto> getAllPeopleCheckins();
     List<PeopleCheckinDto> getPeopleCheckinDrive();
-    void updateNoteByDriver(PeopleRequest peopleRequest);
     void updatePeopleDrive(PeopleRequest peopleRequest);
     List<PeopleDto> getPeopleAccounts();
     List<PeopleDto> getPeopleAccountByDriver();

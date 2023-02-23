@@ -61,7 +61,7 @@ public class PeopleController {
     @PreAuthorize("hasRole('DRIVER')")
     @PostMapping("/updateNoteByDriver")
     public ResponseEntity updateNoteByDriver(@RequestBody PeopleRequest peopleRequest) {
-        peopleService.updateNoteByDriver(peopleRequest);
+        peopleService.updatePeopleDrive(peopleRequest);
         return ResponseEntity.ok("Success update note!");
     }
 
