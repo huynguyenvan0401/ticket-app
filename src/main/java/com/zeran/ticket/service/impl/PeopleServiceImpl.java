@@ -1,7 +1,9 @@
 package com.zeran.ticket.service.impl;
 
+import com.zeran.ticket.entity.Car;
 import com.zeran.ticket.entity.Checkin;
 import com.zeran.ticket.entity.People;
+import com.zeran.ticket.entity.Room;
 import com.zeran.ticket.exception.BadRequestException;
 import com.zeran.ticket.exception.NotFoundException;
 import com.zeran.ticket.exception.UserNotFoundException;
@@ -53,58 +55,36 @@ public class PeopleServiceImpl implements PeopleService {
     }
 
     @Override
-    public void updateNoteByDriver(PeopleRequest peopleRequest) {
-        var people = peopleRepository.findById(peopleRequest.getId())
-                .orElseThrow(() -> new NotFoundException("People not found!"));
-
-        var car = carRepository.findById(peopleRequest.getCarId())
-                .orElseThrow(() -> new NotFoundException("Car not found!"));
-
-        var room = roomRepository.findById(peopleRequest.getRoomId())
-                .orElseThrow(() -> new NotFoundException("Room not found!"));
-
-        if (people.getCar().getId() != peopleRequest.getCarId()) {
-            Optional<Checkin> checkin = checkinRepository.findByPeople(people);
-            if (checkin.isPresent()) {
-                checkin.get().setCar(car);
-                checkinRepository.save(checkin.get());
-            }
-        }
-
-        people.setNote(peopleRequest.getNote());
-        people.setCar(car);
-        people.setRoom(room);
-
-        if (peopleRequest.getIsRoomMaster() != null && "true".equals(peopleRequest.getIsRoomMaster())) {
-            people.setIsRoomMaster(true);
-        } else {
-            people.setIsRoomMaster(false);
-        }
-        peopleRepository.save(people);
-    }
-
-    @Override
     public void updatePeopleDrive(PeopleRequest peopleRequest) {
         var people = peopleRepository.findById(peopleRequest.getId())
                 .orElseThrow(() -> new NotFoundException("People not found!"));
 
-        var car = carRepository.findById(peopleRequest.getCarId())
-                .orElseThrow(() -> new NotFoundException("Car not found!"));
+        if (peopleRequest.getCarId() != null) {
+            Optional<Car> car = carRepository.findById(peopleRequest.getCarId());
 
-        var room = roomRepository.findById(peopleRequest.getRoomId())
-                .orElseThrow(() -> new NotFoundException("Room not found!"));
-
-        if (people.getCar().getId() != peopleRequest.getCarId()) {
-            Optional<Checkin> checkin = checkinRepository.findByPeople(people);
-            if (checkin.isPresent()) {
-                checkin.get().setCar(car);
-                checkinRepository.save(checkin.get());
+            if (car.isPresent() && people.getCar() != null && (people.getCar().getId() != car.get().getId())) {
+                Optional<Checkin> checkin = checkinRepository.findByPeople(people);
+                if (checkin.isPresent()) {
+                    checkin.get().setCar(car.get());
+                    checkinRepository.save(checkin.get());
+                }
+            }
+            // Set car
+            if (car.isPresent()) {
+                people.setCar(car.get());
             }
         }
 
+        // Set Note
         people.setNote(peopleRequest.getNote());
-        people.setCar(car);
-        people.setRoom(room);
+
+        // Set room
+        if (peopleRequest.getRoomId() != null) {
+            Optional<Room> room = roomRepository.findById(peopleRequest.getRoomId());
+            if (room.isPresent()) {
+                people.setRoom(room.get());
+            }
+        }
 
         if (peopleRequest.getIsRoomMaster() != null && "true".equals(peopleRequest.getIsRoomMaster())) {
             people.setIsRoomMaster(true);
@@ -170,20 +150,29 @@ public class PeopleServiceImpl implements PeopleService {
                     isChecked = true;
                 }
             }
-            peopleCheckins.add(PeopleCheckinDto.builder()
+            PeopleCheckinDto peopleCheckinDto = PeopleCheckinDto.builder()
                     .id(people.getId())
                     .account(people.getAccount())
-                    .carId(people.getCar().getId())
-                    .licensePlate(people.getCar().getLicensePlate())
                     .phoneNumber(people.getPhoneNumber())
                     .note(people.getNote())
-                    .roomId(people.getRoom().getId())
-                    .roomType(people.getRoom().getType())
-                    .roomNumber(people.getRoom().getNumber())
                     .isCheckedIn(isChecked)
                     .isRoomMaster(people.getIsRoomMaster())
                     .isHoldRoomKey(people.getIsHoldRoomKey())
-                    .build());
+                    .build();
+
+            if (people.getCar() != null) {
+                peopleCheckinDto.setCarId(people.getCar().getId());
+                peopleCheckinDto.setLicensePlate(people.getCar().getLicensePlate());
+            }
+
+            if (people.getRoom() != null) {
+                Room room = people.getRoom();
+                peopleCheckinDto.setRoomId(room.getId());
+                peopleCheckinDto.setRoomType(room.getType());
+                peopleCheckinDto.setRoomNumber(room.getNumber());
+            }
+
+            peopleCheckins.add(peopleCheckinDto);
         }
 
         return peopleCheckins;
